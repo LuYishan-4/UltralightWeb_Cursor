@@ -1,5 +1,5 @@
 build/
-sdk/ultralight-free-sdk-1.4.0-linux-x64/
+ultralight-free-sdk-1.4.0-linux-x64/
 
 # Prerequisites
 *.d
