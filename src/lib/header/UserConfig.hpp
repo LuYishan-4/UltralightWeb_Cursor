@@ -1,50 +1,40 @@
 #pragma once
 
-#include <string>
-#include <map>
 
+#include <unordered_map>
+#include <string>
 namespace CursorFX {
 
-
-class Config {
-
+class UserConfig {
 public:
-
-    Config();
-
+    UserConfig();
 
     bool load();
-
-
     bool save();
 
-
-
-    std::string get(
-        const std::string& key
+    void setHtmlPath(
+        const std::string& path
     );
 
+    std::string htmlPath() const;
 
-    void set(
+    void setValue(
         const std::string& key,
         const std::string& value
     );
 
-
+    std::string value(
+        const std::string& key,
+        const std::string& defaultValue = ""
+    ) const;
 
 private:
+    std::string configPath_;
 
-    std::string path_;
-
-
-    std::map<
+    std::unordered_map<
         std::string,
         std::string
-    > values_;
-
-
+    > data_;
 };
-
-
 
 }

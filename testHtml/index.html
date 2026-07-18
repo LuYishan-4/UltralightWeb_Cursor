@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+
+html, body
+{
+    margin: 0;
+    padding: 0;
+
+    width: 64px;
+    height: 64px;
+
+    background: transparent;
+    overflow: hidden;
+}
+
+canvas
+{
+    width: 64px;
+    height: 64px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<canvas id="canvas"
+    width="64"
+    height="64">
+</canvas>
+
+
+<script>
+
+console.log("[CursorFX] html loaded");
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const W = 64;
+const H = 64;
+const CX = W / 2;
+const CY = H / 2;
+
+const CORE_RADIUS = 9;
+
+
+// ---------------------------------------------------------
+// ai trash web :)
+// ---------------------------------------------------------
+
+let isPressed = false;
+let wasPressed = false;
+
+let lastX = 0;
+let lastY = 0;
+let hasLast = false;
+
+let idleTime = 0; // 用來做待機呼吸動畫的計時器
+
+let ripples = [];    // 點擊瞬間的擴散圓環
+let particles = [];  // 點擊噴發 / 拖曳尾巴共用的粒子池
+
+
+// ---------------------------------------------------------
+// 產生特效
+// ---------------------------------------------------------
+
+function spawnClickBurst()
+{
+    // 點擊瞬間：一圈擴散的環
+    ripples.push({
+        radius: CORE_RADIUS,
+        alpha: 0.9
+    });
+
+    // 加上一小撮往外炸開的粒子
+    const count = 10;
+
+    for(let i = 0; i < count; i++)
+    {
+        const angle = (Math.PI * 2 * i) / count;
+        const speed = 1.2 + Math.random() * 1.0;
+
+        particles.push({
+            x: CX,
+            y: CY,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            alpha: 1.0,
+            size: 1.8 + Math.random() * 1.4,
+            hue: 200 + Math.random() * 60 // 藍紫色系
+        });
+    }
+
+    capParticles();
+}
+
+
+function spawnDragParticle()
+{
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 0.2 + Math.random() * 0.5;
+
+    particles.push({
+        x: CX,
+        y: CY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        alpha: 0.9,
+        size: 1.2 + Math.random() * 1.2,
+        hue: 20 + Math.random() * 40 // 橘黃色系
+    });
+
+    capParticles();
+}
+
+
+function capParticles()
+{
+    const MAX_PARTICLES = 60;
+
+    if(particles.length > MAX_PARTICLES)
+    {
+        particles.splice(0, particles.length - MAX_PARTICLES);
+    }
+}
+
+
+// ---------------------------------------------------------
+// 繪製
+// ---------------------------------------------------------
+
+function drawIdleGlow()
+{
+    // 呼吸感：半徑與透明度隨 sin 波緩慢變化
+    const pulse = (Math.sin(idleTime * 2.2) + 1) / 2; // 0~1
+
+    const glowRadius = CORE_RADIUS + 4 + pulse * 3;
+
+    const gradient = ctx.createRadialGradient(
+        CX, CY, 1,
+        CX, CY, glowRadius
+    );
+
+    gradient.addColorStop(0, "rgba(120,190,255,0.55)");
+    gradient.addColorStop(1, "rgba(120,190,255,0)");
+
+    ctx.beginPath();
+    ctx.arc(CX, CY, glowRadius, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+}
+
+
+function drawCore(pressed)
+{
+    // 按下時稍微縮小 + 顏色變亮，做出按壓回饋
+    const radius = pressed ? CORE_RADIUS * 0.8 : CORE_RADIUS;
+
+    const gradient = ctx.createRadialGradient(
+        CX - radius * 0.3, CY - radius * 0.3, radius * 0.1,
+        CX, CY, radius
+    );
+
+    if(pressed)
+    {
+        gradient.addColorStop(0, "rgba(255,255,255,0.95)");
+        gradient.addColorStop(1, "rgba(90,170,255,1)");
+    }
+    else
+    {
+        gradient.addColorStop(0, "rgba(255,255,255,0.9)");
+        gradient.addColorStop(1, "rgba(60,130,240,1)");
+    }
+
+    ctx.beginPath();
+    ctx.arc(CX, CY, radius, 0, Math.PI * 2);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+
+    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = "rgba(255,255,255,0.8)";
+    ctx.stroke();
+}
+
+
+function drawRipples()
+{
+    for(let i = ripples.length - 1; i >= 0; i--)
+    {
+        const r = ripples[i];
+
+        ctx.beginPath();
+        ctx.arc(CX, CY, r.radius, 0, Math.PI * 2);
+
+        ctx.strokeStyle = `rgba(140,200,255,${r.alpha})`;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        r.radius += 1.1;
+        r.alpha -= 0.045;
+
+        if(r.alpha <= 0 || r.radius > 30)
+        {
+            ripples.splice(i, 1);
+        }
+    }
+}
+
+
+function drawParticles()
+{
+    for(let i = particles.length - 1; i >= 0; i--)
+    {
+        const p = particles[i];
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${p.alpha})`;
+        ctx.fill();
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.96;
+        p.vy *= 0.96;
+        p.alpha -= 0.025;
+
+        if(p.alpha <= 0)
+        {
+            particles.splice(i, 1);
+        }
+    }
+}
+
+
+function render()
+{
+    ctx.clearRect(0, 0, W, H);
+
+    idleTime += 0.05;
+
+    drawParticles();
+    drawRipples();
+
+    if(!isPressed)
+    {
+        drawIdleGlow();
+    }
+
+    drawCore(isPressed);
+
+    requestAnimationFrame(render);
+}
+
+requestAnimationFrame(render);
+
+
+// ---------------------------------------------------------
+// C++ 呼叫入口
+// ---------------------------------------------------------
+
+/*
+    window.moveCursor(x, y, pressed)
+
+    x, y    : 目前滑鼠在螢幕上的絕對座標（非本畫布座標，僅用來判斷是否有移動）
+    pressed : 滑鼠左鍵是否按著
+
+    這個函式本身不畫「位置」，只依照按壓/拖曳狀態切換特效，
+    因為實際游標位置是由 compositor 把這張 bitmap 貼到滑鼠所在處。
+*/
+window.moveCursor = function(x, y, pressed)
+{
+    isPressed = !!pressed;
+
+    if(isPressed && !wasPressed)
+    {
+        spawnClickBurst();
+    }
+
+    if(isPressed && hasLast)
+    {
+        const dx = x - lastX;
+        const dy = y - lastY;
+        const moved = Math.sqrt(dx * dx + dy * dy);
+
+        if(moved > 0.5)
+        {
+            spawnDragParticle();
+        }
+    }
+
+    wasPressed = isPressed;
+    lastX = x;
+    lastY = y;
+    hasLast = true;
+};
+
+
+console.log("[CursorFX] setup finish");
+
+
+</script>
+
+
+</body>
+</html>

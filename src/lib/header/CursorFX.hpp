@@ -1,30 +1,62 @@
 #pragma once
+
 #include <memory>
+#include <vector>
+#include <string>
 
 
-namespace CursorFX {
+namespace CursorFX
+{
 
-class UltralightHtmlEffect;
-class WaylandBackend;
 class UserConfig;
-class GUIManager;
+class UltralightHtmlEffect;
+class IMouseUploader;
 
 
+class CursorEngine
+{
 
-class CursorEngine {
 public:
+
     CursorEngine();
+
+    ~CursorEngine();
+
 
     bool initialize();
 
 
-
     void run();
 
-private:
-   
 
-  
+    void move(
+        int x,
+        int y
+    );
+
+
+    bool setTheme(
+        const std::string& path
+    );
+
+
+    void enable(
+        bool value
+    );
+
+
+private:
+
+    std::unique_ptr<UserConfig> config_;
+
+    std::unique_ptr<UltralightHtmlEffect> effect_;
+
+    std::unique_ptr<IMouseUploader> mouse_;
+
+
+    bool enabled_ = true;
+
 };
+
 
 }

@@ -122,6 +122,10 @@
         "__tree": "cpp",
         "__tuple": "cpp",
         "ios": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "qstring": "cpp",
+        "qmainwindow": "cpp",
+        "filesystem": "cpp",
+        "*.inc": "cpp"
     }
 }
