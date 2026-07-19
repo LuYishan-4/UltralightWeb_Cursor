@@ -1,22 +1,45 @@
 #pragma once
 
-
 #include <unordered_map>
 #include <string>
-namespace CursorFX {
 
-class UserConfig {
+
+namespace CursorFX
+{
+
+
+
+class UserConfig
+{
+
 public:
+
     UserConfig();
 
+
     bool load();
+
     bool save();
+
+
+    // --- HTML 主題路徑 ---
 
     void setHtmlPath(
         const std::string& path
     );
 
     std::string htmlPath() const;
+
+
+    // --- Ultralight SDK 路徑 ---
+
+    void setSdkPath(
+        const std::string& path
+    );
+
+    std::string sdkPath() const;
+
+
 
     void setValue(
         const std::string& key,
@@ -28,13 +51,14 @@ public:
         const std::string& defaultValue = ""
     ) const;
 
+
 private:
+
     std::string configPath_;
 
-    std::unordered_map<
-        std::string,
-        std::string
-    > data_;
+    std::unordered_map<std::string, std::string> data_;
+
 };
+
 
 }

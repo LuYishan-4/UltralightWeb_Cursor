@@ -126,6 +126,7 @@
         "qstring": "cpp",
         "qmainwindow": "cpp",
         "filesystem": "cpp",
-        "*.inc": "cpp"
+        "*.inc": "cpp",
+        "qobject": "cpp"
     }
 }

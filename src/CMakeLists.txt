@@ -1,63 +1,49 @@
-set(CMAKE_AUTOMOC ON)
+kcoreaddons_add_plugin(ultralightcursor INSTALL_NAMESPACE "kwin/effects/plugins")
 
+target_sources(ultralightcursor PRIVATE
+    lib/UltralightCursorEffect.cpp
+    lib/header/UltralightCursorEffect.hpp
 
-add_executable(
-    cursor-ani
+    lib/UltralightHtmlEffect.cpp
+    lib/header/UltralightHtmlEffect.hpp
 
-    main.cpp
-    lib/CursorMain.cpp
-    lib/MouseUpload.cpp
-    lib/UltralightEffect.cpp
-    lib/WaylandBack.cpp
+    lib/KwinMouseProvider.cpp
+    lib/header/KwinMouseProvider.hpp
+
     lib/UserConfig.cpp
+    lib/header/UserConfig.hpp
+
 )
 
 
-target_include_directories(
-    cursor-ani
 
+
+target_include_directories(ultralightcursor
     PRIVATE
-
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/header
 )
 
 
-find_package(Qt6 REQUIRED
-    COMPONENTS
-        Core
-        DBus
-        Widgets
-)
 
-
-find_package(X11 REQUIRED)
-
-
-find_package(Threads REQUIRED)
-
-
-target_link_libraries(
-    cursor-ani
-
+target_link_libraries(ultralightcursor
     PRIVATE
-
-    wayland-client
-
     Qt6::Core
-    Qt6::DBus
-    Qt6::Widgets
-
+    Qt6::Gui
+    KF6::CoreAddons
+    KF6::ConfigCore
+    KWin::kwin
     Ultralight::SDK
-
-    ${X11_LIBRARIES}
-    Threads::Threads
 )
 
 
-target_include_directories(
-    cursor-ani
+set_target_properties(ultralightcursor PROPERTIES PREFIX "")
 
-    PRIVATE
+install(
+    TARGETS ultralightcursor
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/qt6/plugins/kwin/effects"
+)
 
-    ${X11_INCLUDE_DIR}
+install(
+    FILES metadata.json
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/kwin/effects/ultralightcursor"
 )

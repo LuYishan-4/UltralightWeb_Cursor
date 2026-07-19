@@ -34,6 +34,8 @@ public:
         int hotspot_y
     );
 
+
+
     static void registryGlobal(
         void* data,
         wl_registry* registry,

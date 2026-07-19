@@ -1,0 +1,11 @@
+{
+    "KPlugin": {
+        "Id": "ultralightcursor:)",
+        "Name": "UltralightCursor",
+        "Description": "Ultralight HTML Cursor Effect",
+        "Version": "1.0",
+        "License": "GPL-3.0",
+        "Category": "Appearance",
+        "EnabledByDefault": false
+    }
+}

@@ -26,7 +26,7 @@ struct ConsoleCommand
     };
 
     Type type = Type::Unknown;
-    std::string arg;
+    std::string arg; 
 };
 
 
@@ -67,13 +67,13 @@ void printMenu()
 {
     std::cout
         << "\n"
-        << "==== CursorFX  ====\n"
-        << "  1 = Enable\n"
-        << "  2 = Disable\n"
-        << "  3 = ChangeTheme\n"
-        << "  q = Quit\n"
-        << ">: "<<'\n';
-      
+        << "==== CursorFX 控制台 ====\n"
+        << "  1 = 開啟特效\n"
+        << "  2 = 關閉特效\n"
+        << "  3 = 更換 HTML 主題\n"
+        << "  q = 離開程式\n"
+        << "請輸入指令: "
+        << std::flush;
 }
 
 
@@ -91,7 +91,7 @@ ConsoleCommand parseLine(const std::string& line)
     }
     else if(line == "3")
     {
-        std::cout << "input File path: " << std::flush;
+        std::cout << "請輸入 HTML 檔案路徑: " << std::flush;
 
         std::string path;
         std::getline(std::cin, path);
@@ -112,7 +112,10 @@ ConsoleCommand parseLine(const std::string& line)
 }
 
 
-
+/*
+    輸入 thread 主體：
+    持續讀取終端輸入，解析成指令後丟進佇列。
+*/
 void inputThreadLoop(
     CommandQueue& queue,
     std::atomic<bool>& running
@@ -126,6 +129,7 @@ void inputThreadLoop(
 
         if(!std::getline(std::cin, line))
         {
+            // stdin 關閉（例如被導向 /dev/null），避免忙迴圈
             break;
         }
 
@@ -133,7 +137,7 @@ void inputThreadLoop(
 
         if(cmd.type == ConsoleCommand::Type::Unknown)
         {
-            std::cout << "bruh\n";
+            std::cout << "無效指令，請重新輸入\n";
             continue;
         }
 
@@ -171,15 +175,25 @@ int main(
     CommandQueue commandQueue;
     std::atomic<bool> running{true};
 
+    // 輸入 thread：只負責讀終端、丟指令，不直接碰 Ultralight/Wayland
     std::thread inputThread(
         inputThreadLoop,
         std::ref(commandQueue),
         std::ref(running)
     );
 
-   
+    /*
+        主迴圈
+
+        注意：
+        Ultralight Renderer::Update()
+        Renderer::Render()
+
+        必須固定同一個 thread
+    */
     while(running.load())
     {
+        // 每個 frame 檢查一次有沒有新指令，全部處理完再繼續渲染
         ConsoleCommand cmd;
 
         while(commandQueue.tryPop(cmd))
@@ -188,22 +202,22 @@ int main(
             {
                 case ConsoleCommand::Type::Enable:
                     engine.enable(true);
-                    std::cout << "\n[main] now running\n";
+                    std::cout << "\n[main] 特效已開啟\n";
                     break;
 
                 case ConsoleCommand::Type::Disable:
                     engine.enable(false);
-                    std::cout << "\n[main] close now\n";
+                    std::cout << "\n[main] 特效已關閉\n";
                     break;
 
                 case ConsoleCommand::Type::ChangeTheme:
                     if(engine.setTheme(cmd.arg))
                     {
-                        std::cout << "\n[main] :): " << cmd.arg << "\n";
+                        std::cout << "\n[main] 已切換 HTML: " << cmd.arg << "\n";
                     }
                     else
                     {
-                        std::cerr << "\n[main] Failed " << cmd.arg << "\n";
+                        std::cerr << "\n[main] 切換 HTML 失敗: " << cmd.arg << "\n";
                     }
                     break;
 
@@ -219,12 +233,14 @@ int main(
         if(!running.load())
             break;
 
+        // 渲染 cursor
         engine.run();
 
+        // 60 FPS
         std::this_thread::sleep_for(std::chrono::milliseconds(16));
     }
 
-    std::cout << "\nCiallo...\n";
+    std::cout << "\nCursorFX 準備結束...\n";
 
     if(inputThread.joinable())
         inputThread.join();

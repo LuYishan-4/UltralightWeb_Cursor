@@ -11,6 +11,7 @@ namespace CursorFX
 class UserConfig;
 class UltralightHtmlEffect;
 class IMouseUploader;
+class WaylandBackend;
 
 
 class CursorEngine
@@ -52,6 +53,9 @@ private:
     std::unique_ptr<UltralightHtmlEffect> effect_;
 
     std::unique_ptr<IMouseUploader> mouse_;
+
+
+    std::unique_ptr<WaylandBackend> wayland_;
 
 
     bool enabled_ = true;

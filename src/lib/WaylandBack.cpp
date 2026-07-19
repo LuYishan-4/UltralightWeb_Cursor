@@ -127,7 +127,7 @@ bool WaylandBackend::initialize()
 
     wl_registry_add_listener(registry_, &registry_listener, this);
 
-
+   
     wl_display_roundtrip(display_);
     wl_display_roundtrip(display_);
 
@@ -147,6 +147,7 @@ void WaylandBackend::pump()
 {
     if(!display_)
         return;
+
 
     wl_display_dispatch_pending(display_);
     wl_display_flush(display_);
