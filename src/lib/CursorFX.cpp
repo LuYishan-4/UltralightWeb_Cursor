@@ -70,8 +70,6 @@ bool CursorEngine::initialize()
         return false;
     }
 
-    // *** 新增：CursorEngine 自己建立並初始化 WaylandBackend ***
-    // （UltralightHtmlEffect 現在不再管顯示，只負責渲染出 pixel buffer）
     wayland_ = std::make_unique<WaylandBackend>();
 
     if(!wayland_->initialize())

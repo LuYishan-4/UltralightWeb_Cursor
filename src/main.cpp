@@ -112,10 +112,6 @@ ConsoleCommand parseLine(const std::string& line)
 }
 
 
-/*
-    輸入 thread 主體：
-    持續讀取終端輸入，解析成指令後丟進佇列。
-*/
 void inputThreadLoop(
     CommandQueue& queue,
     std::atomic<bool>& running

@@ -32,8 +32,8 @@ public:
         if(!display_)
         {
             std::cerr
-                << "[MouseUploader/KDE] 無法連上 X server "
-                << "(檢查 XWayland 是否啟用 / DISPLAY 是否有設定)\n";
+                << "[MouseUploader/KDE]  X server "
+                << "(檢查 XWayland 是否啟用 DISPLAY )\n";
 
             return false;
         }
@@ -41,7 +41,7 @@ public:
         screen_ = DefaultScreen(display_);
         root_ = RootWindow(display_, screen_);
 
-        std::cout << "[MouseUploader/KDE] 連上 X server OK\n";
+        std::cout << "[MouseUploader/KDE]  X server OK\n";
 
         return true;
     }

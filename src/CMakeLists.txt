@@ -1,18 +1,24 @@
-kcoreaddons_add_plugin(ultralightcursor INSTALL_NAMESPACE "kwin/effects/plugins")
+kcoreaddons_add_plugin(
+    ultralightcursor
+    INSTALL_NAMESPACE "kwin/effects/plugins"
+)
 
 target_sources(ultralightcursor PRIVATE
-    lib/UltralightCursorEffect.cpp
     lib/header/UltralightCursorEffect.hpp
+    UltralightCursorEffect.cpp
+
 
     lib/UltralightHtmlEffect.cpp
     lib/header/UltralightHtmlEffect.hpp
 
     lib/KwinMouseProvider.cpp
     lib/header/KwinMouseProvider.hpp
+    lib/Quick/PluginPath/PluginPath.hpp
+    lib/Quick/PluginPath/PluginPath.cpp
 
     lib/UserConfig.cpp
     lib/header/UserConfig.hpp
-
+    lib/header/MouseProvider.hpp
 )
 
 
@@ -37,11 +43,6 @@ target_link_libraries(ultralightcursor
 
 
 set_target_properties(ultralightcursor PROPERTIES PREFIX "")
-
-install(
-    TARGETS ultralightcursor
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/qt6/plugins/kwin/effects"
-)
 
 install(
     FILES metadata.json

@@ -1,0 +1,519 @@
+#include "lib/header/UltralightCursorEffect.hpp"
+
+#include "lib/header/KwinMouseProvider.hpp"
+#include "lib/header/UserConfig.hpp"
+#include "lib/Quick/PluginPath/PluginPath.hpp"
+
+
+#include "core/rendertarget.h"
+#include "core/renderviewport.h"
+#include "effect/effecthandler.h"
+#include "opengl/glutils.h"
+
+
+
+#include <QDBusConnection>
+#include <QImage>
+
+#include <iostream>
+
+
+
+namespace KWin
+{
+
+
+KWIN_EFFECT_FACTORY_SUPPORTED(
+    KWin::UltralightCursorEffect,
+    "metadata.json",
+    return KWin::UltralightCursorEffect::supported();
+)
+
+
+
+
+
+
+UltralightCursorEffect::UltralightCursorEffect()
+{
+
+    std::cout
+        << "[UltralightCursorEffect] constructor\n";
+
+
+
+
+    m_html =
+        std::make_unique<
+            CursorFX::UltralightHtmlEffect
+        >();
+
+    CursorFX::UserConfig config;
+    config.load();
+
+    auto base =
+        PluginPath::dataDir();
+
+
+
+
+    auto sdk =
+        base /
+        "sdk" /
+        "ultralight-free-sdk-1.4.0-linux-x64";
+
+
+
+
+    auto html =
+        sdk /
+        "resources" /
+        "index.html";
+
+        std::cout
+        << "[UltralightCursorEffect][debug] sdk="
+        << sdk
+        << "\n";
+
+
+    std::cout
+        << "[UltralightCursorEffect][debug] html="
+        << html
+        << "\n";
+
+
+    config.save();
+
+
+    if(!m_html->initialize(
+        html,
+        sdk
+    ))
+    {
+
+        std::cerr
+            << "[UltralightCursorEffect] init failed\n";
+
+        m_html.reset();
+
+        return;
+    }
+
+
+
+
+
+    m_mouseProvider =
+        std::make_unique<KwinMouseProvider>();
+
+
+
+
+
+    m_mouseProvider->setCallback(
+        [this](const CursorFX::MousePoint& pt)
+        {
+
+            if(!m_html)
+                return;
+
+
+
+            m_cursorPoint =
+                QPointF(
+                    pt.x,
+                    pt.y
+                );
+
+
+
+            m_html->move(
+                pt.x,
+                pt.y,
+                pt.pressed
+            );
+
+
+
+            effects->addRepaintFull();
+
+        }
+    );
+
+
+
+
+    m_mouseProvider->initialize();
+
+
+    QDBusConnection::sessionBus()
+        .registerObject(
+             QStringLiteral("/UltralightCursor"),
+            this,
+            QDBusConnection::ExportAllSlots
+        );
+
+
+
+
+    std::cout
+        << "[UltralightCursorEffect] DBus ready\n";
+
+}
+
+UltralightCursorEffect::~UltralightCursorEffect()
+{
+
+    std::cout
+        << "[UltralightCursorEffect] destroy\n";
+
+
+
+    m_cursorTexture.reset();
+
+
+    m_mouseProvider.reset();
+
+
+    m_html.reset();
+
+}
+
+
+
+
+
+
+
+bool UltralightCursorEffect::supported()
+{
+    return effects->isOpenGLCompositing();
+}
+
+
+
+
+
+
+
+void UltralightCursorEffect::enable()
+{
+
+    if(!m_html)
+        return;
+
+
+
+    m_html->setEnabled(true);
+
+
+
+    effects->addRepaintFull();
+
+
+
+    std::cout
+        << "[UltralightCursorEffect] enabled\n";
+
+}
+
+
+
+
+
+
+void UltralightCursorEffect::disable()
+{
+
+    if(!m_html)
+        return;
+
+
+
+    m_html->setEnabled(false);
+
+
+
+    m_cursorTexture.reset();
+
+
+
+    effects->addRepaintFull();
+
+
+
+    std::cout
+        << "[UltralightCursorEffect] disabled\n";
+
+}
+
+
+
+
+
+
+void UltralightCursorEffect::reloadHtml()
+{
+
+    if(!m_html)
+        return;
+
+
+
+    m_html->reload();
+
+
+
+    effects->addRepaintFull();
+
+
+
+    std::cout
+        << "[UltralightCursorEffect] html reload\n";
+
+}
+
+GLTexture* UltralightCursorEffect::ensureCursorTexture()
+{
+
+    if(!m_html ||
+       !m_html->isEnabled())
+    {
+        return nullptr;
+    }
+
+
+
+
+
+    m_html->update();
+
+
+    if(
+        m_cursorTexture &&
+        !m_html->hasNewFrame()
+    )
+    {
+        return m_cursorTexture.get();
+    }
+
+
+
+
+
+    const uint8_t* pixels =
+        m_html->pixels();
+
+
+
+    if(!pixels)
+        return nullptr;
+
+
+
+
+
+    QImage image(
+        pixels,
+        m_html->width(),
+        m_html->height(),
+        m_html->stride(),
+        QImage::Format_ARGB32_Premultiplied
+    );
+
+
+
+    m_cursorTexture =
+        GLTexture::upload(
+            image.copy()
+        );
+
+
+
+
+    if(!m_cursorTexture)
+        return nullptr;
+
+
+
+
+    m_cursorTexture->setWrapMode(
+        GL_CLAMP_TO_EDGE
+    );
+
+
+
+
+    m_html->clearNewFrame();
+
+
+
+
+    return m_cursorTexture.get();
+
+}
+
+
+
+
+
+
+
+void UltralightCursorEffect::paintScreen(
+    const RenderTarget& renderTarget,
+    const RenderViewport& viewport,
+    int mask,
+    const Region& region,
+    LogicalOutput* screen
+)
+{
+
+    effects->paintScreen(
+        renderTarget,
+        viewport,
+        mask,
+        region,
+        screen
+    );
+
+
+
+
+    GLTexture* texture =
+        ensureCursorTexture();
+
+
+
+
+    if(!texture)
+    {
+        effects->addRepaintFull();
+        return;
+    }
+
+
+
+
+
+    int w =
+        m_html->width();
+
+
+    int h =
+        m_html->height();
+
+
+
+
+    QPointF hotspot(
+        w/2.0,
+        h/2.0
+    );
+
+
+
+    QPointF pos =
+        effects->cursorPos()
+        -
+        hotspot;
+
+
+
+
+
+    auto scale =
+        viewport.scale();
+
+
+
+
+
+    ShaderBinder binder(
+        ShaderTrait::MapTexture |
+        ShaderTrait::TransformColorspace
+    );
+
+
+
+    GLShader* shader =
+        binder.shader();
+
+
+
+
+
+    shader->setColorspaceUniforms(
+        ColorDescription::sRGB,
+        renderTarget.colorDescription(),
+        RenderingIntent::Perceptual
+    );
+
+
+
+
+
+    QMatrix4x4 mvp =
+        viewport.projectionMatrix();
+
+
+
+    mvp.translate(
+        pos.x()*scale,
+        pos.y()*scale
+    );
+
+
+
+    shader->setUniform(
+        GLShader::Mat4Uniform::ModelViewProjectionMatrix,
+        mvp
+    );
+
+
+
+
+
+    glEnable(GL_BLEND);
+
+
+
+    glBlendFunc(
+        GL_ONE,
+        GL_ONE_MINUS_SRC_ALPHA
+    );
+
+
+
+    texture->render(
+        QSizeF(w,h)*scale
+    );
+
+
+
+    glDisable(GL_BLEND);
+
+
+
+    effects->addRepaintFull();
+
+}
+
+
+
+
+
+
+
+
+bool UltralightCursorEffect::isActive() const
+{
+
+    return m_html != nullptr;
+}
+
+
+
+}
+
+
+#include "UltralightCursorEffect.moc"

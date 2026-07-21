@@ -24,7 +24,7 @@ bool KwinMouseProvider::initialize()
         &KwinMouseProvider::slotMouseChanged
     );
 
-    std::cout << "[KwinMouseProvider][debug] 已連上 effects->mouseChanged\n";
+    std::cout << "[KwinMouseProvider][debug] effects->mouseChanged\n";
 
     return true;
 }
@@ -52,6 +52,15 @@ void KwinMouseProvider::slotMouseChanged(
 
     pt.x = static_cast<int>(pos.x());
     pt.y = static_cast<int>(pos.y());
+        std::cout
+        << "[KwinMouseProvider][debug] mouseChanged "
+        << "x="
+        << pos.x()
+        << " y="
+        << pos.y()
+        << " left="
+        << buttons.testFlag(Qt::LeftButton)
+        << "\n";
     pt.pressed = buttons.testFlag(Qt::LeftButton);
 
     callback_(pt);

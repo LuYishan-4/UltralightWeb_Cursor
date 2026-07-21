@@ -31,8 +31,6 @@ public:
     std::string htmlPath() const;
 
 
-    // --- Ultralight SDK 路徑 ---
-
     void setSdkPath(
         const std::string& path
     );

@@ -1,14 +1,19 @@
-
-
 #pragma once
 
 
-
 #include <memory>
+
+#include <QPointF>
+#include <QDBusConnection>
+
 #include <core/output.h>
+#include <kwin/effect/effect.h>
+
+
 #include "UltralightHtmlEffect.hpp"
 #include "MouseProvider.hpp"
-#include <kwin/effect/effect.h>
+
+
 
 namespace KWin
 {
@@ -17,28 +22,37 @@ namespace KWin
 class GLTexture;
 
 
-class UltralightCursorEffect : public Effect
+
+class UltralightCursorEffect :
+    public Effect
 {
+
     Q_OBJECT
-    
+
 
 public:
 
+
     UltralightCursorEffect();
+
 
     ~UltralightCursorEffect() override;
 
 
-   void paintScreen(
-    const RenderTarget& renderTarget,
-    const RenderViewport& viewport,
-    int mask,
-    const Region& region,
-    LogicalOutput* screen
-) override;
+
+
+    void paintScreen(
+        const RenderTarget& renderTarget,
+        const RenderViewport& viewport,
+        int mask,
+        const Region& region,
+        LogicalOutput* screen
+    ) override;
+
 
 
     bool isActive() const override;
+
 
 
     int requestedEffectChainPosition() const override
@@ -47,11 +61,30 @@ public:
     }
 
 
-    // 給 factory 巨集用，檢查目前 compositing 環境支不支援這個 effect
+
     static bool supported();
 
 
+
+
+public Q_SLOTS:
+
+
+    // DBus 開關
+    void enable();
+
+
+    void disable();
+
+
+    // DBus 重新載入 HTML
+    void reloadHtml();
+
+
+
+
 private:
+
 
     void hideCursor();
 
@@ -61,17 +94,31 @@ private:
     GLTexture* ensureCursorTexture();
 
 
+
+
+private:
+
+
     std::unique_ptr<CursorFX::UltralightHtmlEffect> m_html;
+
 
     std::unique_ptr<CursorFX::IMouseProvider> m_mouseProvider;
 
+
+
     std::unique_ptr<GLTexture> m_cursorTexture;
+
+
 
     bool m_isMouseHidden = false;
 
+
     QPointF m_cursorPoint;
 
+
 };
+
+
 
 
 }

@@ -11,4 +11,5 @@ cmake -B build \
 
 cmake --build build
 
-./build/src/cursor-ani
+cd build
+sudo cmake --install .
