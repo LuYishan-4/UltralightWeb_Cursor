@@ -12,7 +12,7 @@
 
 #include "UltralightHtmlEffect.hpp"
 #include "MouseProvider.hpp"
-
+#include "UserConfig.hpp"
 
 
 namespace KWin
@@ -70,17 +70,13 @@ public:
 public Q_SLOTS:
 
 
-    // DBus 開關
     void enable();
 
 
     void disable();
 
 
-    // DBus 重新載入 HTML
     void reloadHtml();
-
-
 
 
 private:
@@ -94,10 +90,9 @@ private:
     GLTexture* ensureCursorTexture();
 
 
-
-
 private:
 
+     std::unique_ptr<UltralightWebCursorM::UserConfig> m_config;
 
     std::unique_ptr<UltralightWebCursorM::UltralightHtmlEffect> m_html;
 
