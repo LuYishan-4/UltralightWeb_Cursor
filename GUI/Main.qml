@@ -8,7 +8,7 @@ ApplicationWindow {
     width: 700
     height: 520
     visible: true
-    title: qsTr("CursorFX Settings")
+    title: qsTr("UltralightWebCursor-GUI")
 
     // Folder Dialog for Theme Upload
     FolderDialog {
