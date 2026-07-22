@@ -41,6 +41,8 @@ UltralightCursorEffect::UltralightCursorEffect()
     config.load();
     auto html = config.readKeyValue("html");
     auto sdk = config.readKeyValue("sdk");
+    int width = std::stoi(config.readKeyValue("width"));
+    int height = std::stoi(config.readKeyValue("height"));
     auto blacklist = config.getBlacklist();
     m_blacklist.setBlacklist(config.getBlacklist());
 
@@ -48,9 +50,17 @@ UltralightCursorEffect::UltralightCursorEffect()
 
     config.save();
 
+    QDBusConnection::sessionBus().registerObject(
+        QStringLiteral("/UltralightCursor"),
+        this,
+        QDBusConnection::ExportAllSlots
+    );
+
     if(!m_html->initialize(
         html,
-        sdk
+        sdk,
+        width,
+        height
     ))
     {
         std::cerr
@@ -80,12 +90,6 @@ UltralightCursorEffect::UltralightCursorEffect()
 
 m_mouseProvider->initialize();
 
-
-QDBusConnection::sessionBus().registerObject(
-        QStringLiteral("/UltralightCursor"),
-        this,
-        QDBusConnection::ExportAllSlots
-);
 
 }
 

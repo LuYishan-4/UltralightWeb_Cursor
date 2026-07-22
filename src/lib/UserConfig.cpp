@@ -42,6 +42,8 @@ bool UserConfig::load(){
         data_["html"] = g_htmlInitialPath/  "default"/ "index.html";
         data_["sdk"]  =  g_sdkInitialPath.string();
         data_["blacklist"] = "";
+        data_["width"] = "128";
+        data_["height"] = "128";
         return save();
     }
  

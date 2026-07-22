@@ -22,7 +22,9 @@ UltralightHtmlEffect::~UltralightHtmlEffect(){
 
 
 //initialize
-bool UltralightHtmlEffect::initialize( const std::string& path,const std::string& sdk){
+bool UltralightHtmlEffect::initialize( const std::string& path,const std::string& sdk,const int&  width,const int&  height){
+    width_ = width;
+    height_ = height;
     ultralight::Config config;
     config.resource_path_prefix =
         ultralight::String(
@@ -96,6 +98,7 @@ bool UltralightHtmlEffect::load(const std::string& path){
 
 void UltralightHtmlEffect::reload(){
     if(html_path_.empty())return;
+    if(width_ > 1920 || height_ > 1080)return;
 
     if(!std::filesystem::exists(html_path_))return;
 

@@ -25,7 +25,8 @@ public:
 
     bool initialize(
         const std::string& path,
-        const std::string& perpath
+        const std::string& perpath,
+        const int&  width,const int&  height
     );
 
 
