@@ -2,7 +2,7 @@
 
 #include "lib/header/KwinMouseProvider.hpp"
 #include "lib/header/UserConfig.hpp"
-#include "lib/Quick/PluginPath/PluginPath.hpp"
+
 
 
 #include "core/rendertarget.h"
@@ -51,35 +51,12 @@ UltralightCursorEffect::UltralightCursorEffect()
     UltralightWebCursorM::UserConfig config;
     config.load();
 
-    auto base =
-        PluginPath::dataDir();
+    html = 
 
 
 
 
-    auto sdk =
-        base /
-        "sdk" /
-        "ultralight-free-sdk-1.4.0-linux-x64";
 
-
-
-
-    auto html =
-        sdk /
-        "resources" /
-        "index.html";
-
-        std::cout
-        << "[UltralightCursorEffect][debug] sdk="
-        << sdk
-        << "\n";
-
-
-    std::cout
-        << "[UltralightCursorEffect][debug] html="
-        << html
-        << "\n";
 
 
     config.save();
