@@ -31,8 +31,9 @@ target_link_libraries(ultralightwebcursor
 
 
 set_target_properties(ultralightwebcursor PROPERTIES PREFIX "")
-
+#[[
 install(
     FILES metadata.json
     DESTINATION "${CMAKE_INSTALL_DATADIR}/kwin/effects/ultralightwebcursor"
 )
+]]

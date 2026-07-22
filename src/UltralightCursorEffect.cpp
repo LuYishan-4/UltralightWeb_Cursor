@@ -31,8 +31,7 @@ KWIN_EFFECT_FACTORY_SUPPORTED(
 UltralightCursorEffect::UltralightCursorEffect()
 {
     
-    std::cout
-        << "[UltralightCursorEffect] constructor\n";
+    qDebug() << "[UltralightCursorEffect] constructor";
     m_html =
         std::make_unique<
             UltralightWebCursorM::UltralightHtmlEffect
