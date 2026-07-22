@@ -43,18 +43,13 @@ UltralightCursorEffect::UltralightCursorEffect()
     auto sdk = config.readKeyValue("sdk");
     int width = std::stoi(config.readKeyValue("width"));
     int height = std::stoi(config.readKeyValue("height"));
-    auto blacklist = config.getBlacklist();
-    m_blacklist.setBlacklist(config.getBlacklist());
+    //auto blacklist = config.getBlacklist();
+    //m_blacklist.setBlacklist(config.getBlacklist());
 
 
 
     config.save();
 
-    QDBusConnection::sessionBus().registerObject(
-        QStringLiteral("/UltralightCursor"),
-        this,
-        QDBusConnection::ExportAllSlots
-    );
 
     if(!m_html->initialize(
         html,
@@ -89,6 +84,12 @@ UltralightCursorEffect::UltralightCursorEffect()
 );
 
 m_mouseProvider->initialize();
+
+    QDBusConnection::sessionBus().registerObject(
+        QStringLiteral("/UltralightCursor"),
+        this,
+        QDBusConnection::ExportAllSlots
+    );
 
 
 }
@@ -128,13 +129,6 @@ m_mouseProvider->initialize();
         effects->addRepaintFull();
 
     }
-
-    bool UltralightCursorEffect::isBlacklisted() const {
-         auto window = effects->activeWindow();
-          if(!window) return false;
-           QString app = window->windowClass();
-            return m_blacklist.contains( app.toStdString() );
-     }
 
     GLTexture* UltralightCursorEffect::ensureCursorTexture(){
         if(!m_html ||!m_html->isEnabled())return nullptr;

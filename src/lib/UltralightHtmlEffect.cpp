@@ -56,7 +56,7 @@ bool UltralightHtmlEffect::initialize( const std::string& path,const std::string
             vc,
             nullptr
         );
-    std::cout<<width_<<"\n";
+    std::cout<<"[Ultralight]"<<width_<<"\n";
     html_path_ = path;
     if(!view_)return false;
 

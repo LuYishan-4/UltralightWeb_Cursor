@@ -13,7 +13,7 @@
 #include "UltralightHtmlEffect.hpp"
 #include "MouseProvider.hpp"
 #include "UserConfig.hpp"
-#include "../Quick/BlackList/BlacklistManager.hpp"
+//#include "../Quick/BlackList/BlacklistManager.hpp"
 
 
 namespace KWin
@@ -41,8 +41,6 @@ public:
 
 
 
-
-    bool isBlacklisted() const;
     void paintScreen(
         const RenderTarget& renderTarget,
         const RenderViewport& viewport,
@@ -100,9 +98,6 @@ private:
 
 
     std::unique_ptr<UltralightWebCursorM::IMouseProvider> m_mouseProvider;
-
-    UltralightWebCursorM::BlacklistManager m_blacklist;
-
 
 
     std::unique_ptr<GLTexture> m_cursorTexture;

@@ -102,7 +102,7 @@ set(CMAKE_BUILD_RPATH
 set(CMAKE_INSTALL_RPATH
     "${ULTRALIGHT_BIN}"
 )
-
+add_subdirectory(GUI)
 add_subdirectory(src)
 
 install( 
@@ -114,10 +114,6 @@ install(
     DESTINATION ${CMAKE_INSTALL_DATADIR}/kwin/effects/ultralightcursor/sdk/ultralight-free-sdk-1.4.0-linux-x64/resources/default/
 )
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
-    "${CMAKE_BINARY_DIR}/bin"
-)
-add_subdirectory(GUI)
 feature_summary(
     WHAT ALL
     INCLUDE_QUIET_PACKAGES

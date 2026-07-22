@@ -1,5 +1,5 @@
 kcoreaddons_add_plugin(
-    ultralightcursor
+    ultralightwebcursor
     INSTALL_NAMESPACE "kwin/effects/plugins"
 )
 
@@ -8,18 +8,18 @@ file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/lib/*.hpp"
 )
 
-target_sources(ultralightcursor PRIVATE
+target_sources(ultralightwebcursor PRIVATE
     UltralightCursorEffect.cpp
     ${LIB_SOURCES}
 )
-target_include_directories(ultralightcursor
+target_include_directories(ultralightwebcursor
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/header
 )
 
 
 
-target_link_libraries(ultralightcursor
+target_link_libraries(ultralightwebcursor
     PRIVATE
     Qt6::Core
     Qt6::Gui
@@ -30,9 +30,9 @@ target_link_libraries(ultralightcursor
 )
 
 
-set_target_properties(ultralightcursor PROPERTIES PREFIX "")
+set_target_properties(ultralightwebcursor PROPERTIES PREFIX "")
 
 install(
     FILES metadata.json
-    DESTINATION "${CMAKE_INSTALL_DATADIR}/kwin/effects/ultralightcursor"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/kwin/effects/ultralightwebcursor"
 )

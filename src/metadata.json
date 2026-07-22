@@ -2,7 +2,7 @@
     "KPlugin": {
         "Name": "Ultralightcursor",
         "Description": "customsize your cursor",
-        "Id": "ultralightcursor",
+        "Id": "ultralightwebcursor",
         "Version": "1.0.0",
         "License": "MIT",
         "Website": "https://github.com/LuYishan-4/Cursor-animation/"
