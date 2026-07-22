@@ -63,7 +63,7 @@ ApplicationWindow {
                         if (typeof backend.openGitHub === "function") {
                             backend.openGitHub()
                         } else {
-                            Qt.openUrlExternally("https://github.com")
+                            Qt.openUrlExternally("https://github.com/LuYishan-4/Cursor-animation")
                         }
                     }
                 }

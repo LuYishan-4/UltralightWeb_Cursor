@@ -88,15 +88,13 @@ void UserConfig::setKeyValue(const std::string& key,const std::string& path){
 
 std::string UserConfig::readKeyValue(const std::string& key) const{
     auto it = data_.find(key);
-    if(it == data_.end())return "";
-    if(!fs::exists(it->second)){
+    if(it == data_.end()){
         std::cerr
-            << "[UserConfig] warning： not found: "
-            << it->second
+            << "[UserConfig] key not found: "
+            << key
             << "\n";
         return "";
     }
-
     return it->second;
 }
 std::vector<std::string>UserConfig::getBlacklist() const{

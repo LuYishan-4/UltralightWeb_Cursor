@@ -183,7 +183,7 @@ m_mouseProvider->initialize();
             region,
             screen
         );
-        if(isBlacklisted()) return;
+        //if(isBlacklisted()) return;
 
         if (screen && !screen->geometry().contains(effects->cursorPos().toPoint())) return;
         

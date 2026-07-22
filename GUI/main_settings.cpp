@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
     engine.load(
         QUrl(QStringLiteral(
-            "qrc:/qt/qml/CursorFXSettings/Main.qml"
+            "qrc:/CursorFXSettings/Main.qml"
         ))
     );
 
