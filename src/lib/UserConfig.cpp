@@ -83,12 +83,7 @@ bool UserConfig::save()
 
 
 void UserConfig::setKeyValue(const std::string& key,const std::string& path){
-    std::error_code ec; 
-    if (fs::exists(path, ec) && !ec && fs::is_regular_file(path, ec)){
-        data_[key] = path;
-    }else{
-        std::cerr << "[UserConfig] not find file: " << path << "\n";
-    }
+    data_[key] = path;
 }
 
 std::string UserConfig::readKeyValue(const std::string& key) const{
@@ -194,6 +189,17 @@ bool UserConfig::uploadTheme(const std::string& path,const std::string& themeNam
     );
 
     return true;
+}
+void UserConfig::setTheme(
+    const std::string& themeName
+)
+{
+    data_["html"] =
+        (
+            g_htmlInitialPath /
+            themeName /
+            "index.html"
+        ).string();
 }
 std::string UserConfig::currentTheme() const{
     auto it = data_.find("html");

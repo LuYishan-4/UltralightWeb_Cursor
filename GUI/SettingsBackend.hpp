@@ -43,7 +43,6 @@ public:
     Q_INVOKABLE void reload();
     Q_INVOKABLE void enable();
     Q_INVOKABLE void disable();
-    Q_INVOKABLE void reloadHtml();
     Q_INVOKABLE void reconfigureKWin();
 
     Q_INVOKABLE bool pathExists(const QString& path) const;

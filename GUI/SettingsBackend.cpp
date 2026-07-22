@@ -160,6 +160,7 @@ void SettingsBackend::reload()
     Q_EMIT cursorWidthChanged();
     Q_EMIT cursorHeightChanged();
 
+    reconfigureKWin();
     setStatusMessage(QStringLiteral("Reload"));
 }
 
@@ -249,11 +250,6 @@ void SettingsBackend::useTheme(const QString& name)
 
 void SettingsBackend::removeTheme(const QString& name)
 {
-    /*
-        UserConfig 沒有提供 removeTheme
-        保留在 SettingsBackend
-    */
-
     std::filesystem::remove_all(
         g_sdkInitialPath / "resources" / name.toStdString()
     );
@@ -311,11 +307,6 @@ void SettingsBackend::disable()
     );
 }
 
-void SettingsBackend::reloadHtml()
-{
-    save();
-    reconfigureKWin();
-}
 
 void SettingsBackend::reconfigureKWin()
 {
