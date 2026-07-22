@@ -15,7 +15,7 @@ ApplicationWindow {
 
     FileDialog {
         id: htmlFileDialog
-        title: qsTr("選擇 HTML 主題檔案")
+        title: qsTr("Choose HTML")
         nameFilters: ["HTML files (*.html *.htm)"]
         onAccepted: {
             backend.htmlPath = htmlFileDialog.selectedFile.toString().replace("file://", "")
@@ -24,7 +24,7 @@ ApplicationWindow {
 
     FolderDialog {
         id: sdkFolderDialog
-        title: qsTr("選擇 Ultralight SDK 資料夾")
+        title: qsTr("Choose Ultralight SDK ")
         onAccepted: {
             backend.sdkPath = sdkFolderDialog.selectedFolder.toString().replace("file://", "")
         }
@@ -37,7 +37,7 @@ ApplicationWindow {
         spacing: 16
 
         Label {
-            text: qsTr("CursorFX 游標特效設定")
+            text: qsTr("Animation-Setting")
             font.pixelSize: 20
             font.bold: true
         }
@@ -46,7 +46,7 @@ ApplicationWindow {
             Layout.fillWidth: true
 
             Label {
-                text: qsTr("啟用特效")
+                text: qsTr("Enable animation")
                 Layout.fillWidth: true
             }
 
@@ -66,7 +66,7 @@ ApplicationWindow {
             spacing: 4
 
             Label {
-                text: qsTr("HTML 主題路徑")
+                text: qsTr("HTML Path徑")
                 font.bold: true
             }
 
@@ -77,33 +77,33 @@ ApplicationWindow {
                     id: htmlPathField
                     Layout.fillWidth: true
                     text: backend.htmlPath
-                    placeholderText: qsTr("尚未設定")
+                    placeholderText: qsTr("not setting")
                     onEditingFinished: backend.htmlPath = text
 
                     color: backend.pathExists(text) ? "black" : "red"
                 }
 
                 Button {
-                    text: qsTr("瀏覽…")
+                    text: qsTr("find")
                     onClicked: htmlFileDialog.open()
                 }
             }
 
             Label {
                 visible: htmlPathField.text.length > 0 && !backend.pathExists(htmlPathField.text)
-                text: qsTr("⚠ 這個路徑目前不存在")
+                text: qsTr("cant not find path")
                 color: "red"
                 font.pixelSize: 11
             }
         }
 
-        // --- SDK 路徑 ---
+
         ColumnLayout {
             Layout.fillWidth: true
             spacing: 4
 
             Label {
-                text: qsTr("Ultralight SDK 路徑")
+                text: qsTr("Ultralight SDK path")
                 font.bold: true
             }
 
@@ -114,21 +114,21 @@ ApplicationWindow {
                     id: sdkPathField
                     Layout.fillWidth: true
                     text: backend.sdkPath
-                    placeholderText: qsTr("尚未設定")
+                    placeholderText: qsTr("not setting")
                     onEditingFinished: backend.sdkPath = text
 
                     color: backend.pathExists(text) ? "black" : "red"
                 }
 
                 Button {
-                    text: qsTr("瀏覽…")
+                    text: qsTr("Browse")
                     onClicked: sdkFolderDialog.open()
                 }
             }
 
             Label {
                 visible: sdkPathField.text.length > 0 && !backend.pathExists(sdkPathField.text)
-                text: qsTr("⚠ 這個路徑目前不存在")
+                text: qsTr("not find")
                 color: "red"
                 font.pixelSize: 11
             }
@@ -149,12 +149,12 @@ ApplicationWindow {
             spacing: 8
 
             Button {
-                text: qsTr("重新載入")
+                text: qsTr("reload")
                 onClicked: backend.reload()
             }
 
             Button {
-                text: qsTr("重新載入 HTML")
+                text: qsTr("reload HTML")
                 onClicked: backend.reloadHtml()
             }
 
@@ -163,12 +163,12 @@ ApplicationWindow {
             }
 
             Button {
-                text: qsTr("儲存")
+                text: qsTr("save")
                 onClicked: backend.save()
             }
 
             Button {
-                text: qsTr("儲存並套用")
+                text: qsTr("save and apply")
                 highlighted: true
                 onClicked: {
                     backend.save()

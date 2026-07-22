@@ -111,6 +111,7 @@ void UltralightHtmlEffect::reload(){
 }
 void UltralightHtmlEffect::move( int x, int y,bool pressed){
     if(!view_)return;
+    
     std::string js ="if(window.moveCursor)"
         "{window.moveCursor("
         +

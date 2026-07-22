@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
 Name=CursorFX Settings
-Name[zh_TW]=CursorFX 游標特效設定
+Name[zh_TW]=UltralightWebCursor-GUI
 Comment=Configure the CursorFX cursor theme effect
-Comment[zh_TW]=設定 CursorFX 游標特效的 HTML 主題與 SDK 路徑
+Comment[zh_TW]=UltralightWebCursor gui config
 Exec=@CURSORFX_SETTINGS_BIN@
 Icon=preferences-system
 Categories=Qt;Settings;DesktopSettings;
