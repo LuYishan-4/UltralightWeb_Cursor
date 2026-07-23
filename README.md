@@ -3,7 +3,7 @@
 
 # UltralightWeb Cursor
 
-[![License](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![AUR](https://img.shields.io/badge/AUR-ultralightwebcursor--git-1793d1?logo=arch-linux&logoColor=white)](https://aur.archlinux.org/packages/ultralightwebcursor-git)
 [![Platform](https://img.shields.io/badge/platform-Wayland%20%7C%20KWin-blueviolet)](#)
 [![Made with C++](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=c%2B%2B&logoColor=white)](#)
