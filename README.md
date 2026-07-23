@@ -56,11 +56,7 @@ yay -S ultralightwebcursor-git
 ```bash
 git clone https://github.com/yourname/UltralightWeb-Cursor.git
 cd UltralightWeb-Cursor
-
-mkdir build && cd build
-cmake ..
-cmake --build . -j$(nproc)
-cmake --install .
+./build.sh
 ```
 
 This builds and installs all three components: the KWin plugin, the settings app, and the test daemon.
@@ -128,11 +124,7 @@ yay -S ultralightwebcursor-git
 ```bash
 git clone https://github.com/yourname/UltralightWeb-Cursor.git
 cd UltralightWeb-Cursor
-
-mkdir build && cd build
-cmake ..
-cmake --build . -j$(nproc)
-cmake --install .
+./build.sh
 ```
 
 這樣會一次把三個元件（KWin plugin、設定工具、測試 daemon）都編好並安裝。
