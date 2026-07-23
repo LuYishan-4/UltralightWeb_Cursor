@@ -1,5 +1,5 @@
 pkgname=ultralightwebcursor-git
-pkgver=r1
+pkgver=r34.7b7b5ec
 pkgrel=1
 
 pkgdesc="Ultralight HTML cursor effect for KDE Plasma"
