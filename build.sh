@@ -13,5 +13,5 @@ cmake --build build
 
 cd build
 sudo cmake --install .
-#sudo chown $USER:$USER ~/.local/bin/UltralightWebCursor-GUI
-#sudo chown $USER:$USER ~/.local/share/applications/UltralightWebCursor-GUI.desktop
+sudo chown $USER:$USER ~/.local/bin/UltralightWebCursor-GUI
+sudo chown $USER:$USER ~/.local/share/applications/UltralightWebCursor-GUI.desktop

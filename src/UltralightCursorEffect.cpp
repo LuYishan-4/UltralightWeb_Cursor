@@ -51,8 +51,8 @@ UltralightCursorEffect::UltralightCursorEffect()
     int width = std::stoi(widthStr);
     int height = std::stoi(heightStr);
     qDebug() << "[UltralightCursorEffect] conficccccc";
-    //auto blacklist = config.getBlacklist();
-    //m_blacklist.setBlacklist(config.getBlacklist());
+    auto blacklist = config.getBlacklist();
+    m_blacklist.setBlacklist(config.getBlacklist());
 
 
 
@@ -98,7 +98,7 @@ m_mouseProvider->initialize();
         this,
         QDBusConnection::ExportAllSlots
     );
-
+    qDebug() << "[UltralightCursorEffect] cod";
 
 }
 
@@ -137,12 +137,17 @@ m_mouseProvider->initialize();
         effects->addRepaintFull();
 
     }
+    bool UltralightCursorEffect::isBlacklisted() const {
+         auto window = effects->activeWindow();
+          if(!window) return false;
+           QString app = window->windowClass();
+            return m_blacklist.contains( app.toStdString() );
+     }
 
     GLTexture* UltralightCursorEffect::ensureCursorTexture(){
         if(!m_html ||!m_html->isEnabled())return nullptr;
-   
-        m_html->update();
 
+        m_html->update();
         if(m_cursorTexture &&!m_html->hasNewFrame())return m_cursorTexture.get();
 
         const uint8_t* pixels =m_html->pixels();
@@ -185,10 +190,9 @@ m_mouseProvider->initialize();
             region,
             screen
         );
-        //if(isBlacklisted()) return;
+        if(isBlacklisted()) return;
 
         if (screen && !screen->geometry().contains(effects->cursorPos().toPoint())) return;
-        
         GLTexture* texture =ensureCursorTexture();
         if(!texture){
             effects->addRepaintFull();

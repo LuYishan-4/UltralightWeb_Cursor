@@ -32,6 +32,7 @@ bool UltralightHtmlEffect::initialize( const std::string& path,const std::string
         );
     auto& platform =ultralight::Platform::instance();
     platform.set_config(config);
+    
     platform.set_font_loader(
         ultralight::GetPlatformFontLoader()
     );
@@ -49,6 +50,7 @@ bool UltralightHtmlEffect::initialize( const std::string& path,const std::string
     if(!renderer_) return false;
 
     ultralight::ViewConfig vc;
+    vc.is_accelerated = false;
     vc.is_transparent = true;
 
     view_ =
@@ -83,10 +85,10 @@ bool UltralightHtmlEffect::load(const std::string& path){
 
     std::filesystem::path p(path);
 
-    std::string base ="file://" +p.parent_path().string()+"/"+"index.html";
+    std::string base ="file://" +p.parent_path().string()+"/";
 
     is_loaded_ = false;
-
+    qDebug() << "[UltralightCursorEffect] "<<html;
     view_->LoadHTML(
         ultralight::String(
             html.c_str()

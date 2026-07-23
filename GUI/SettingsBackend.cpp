@@ -279,32 +279,60 @@ bool SettingsBackend::pathExists(const QString& path) const
 
 void SettingsBackend::enable()
 {
-    QDBusInterface kwin(
+    QDBusInterface effect(
         QStringLiteral("org.kde.KWin"),
-        QStringLiteral("/Effects"),
-        QStringLiteral("org.kde.kwin.Effects"),
+        QStringLiteral("/UltralightCursor"),
+        QStringLiteral("org.kde.KWin"),
         QDBusConnection::sessionBus()
     );
 
-    kwin.call(
-        QStringLiteral("loadEffect"),
-        QStringLiteral("ultralightcursor")
-    );
+    QDBusMessage reply =
+        effect.call(
+            QStringLiteral("enable")
+        );
+
+
+    if(reply.type() == QDBusMessage::ErrorMessage)
+    {
+        setStatusMessage(
+            QStringLiteral("enable failed")
+        );
+    }
+    else
+    {
+        setStatusMessage(
+            QStringLiteral("enable")
+        );
+    }
 }
 
 void SettingsBackend::disable()
 {
-    QDBusInterface kwin(
+    QDBusInterface effect(
         QStringLiteral("org.kde.KWin"),
-        QStringLiteral("/Effects"),
-        QStringLiteral("org.kde.kwin.Effects"),
+        QStringLiteral("/UltralightCursor"),
+        QStringLiteral("org.kde.KWin"),
         QDBusConnection::sessionBus()
     );
 
-    kwin.call(
-        QStringLiteral("unloadEffect"),
-        QStringLiteral("ultralightcursor")
-    );
+   QDBusMessage reply =
+        effect.call(
+            QStringLiteral("disable")
+        );
+
+
+    if(reply.type() == QDBusMessage::ErrorMessage)
+    {
+        setStatusMessage(
+            QStringLiteral("disable failed")
+        );
+    }
+    else
+    {
+        setStatusMessage(
+            QStringLiteral("disable")
+        );
+    }
 }
 
 
