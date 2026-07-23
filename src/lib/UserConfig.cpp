@@ -165,27 +165,26 @@ void UserConfig::removeBlacklist(const std::string& app){
 }
 bool UserConfig::uploadTheme(const std::string& path,const std::string& themeName){
     namespace fs = std::filesystem;
-    fs::path src(path);
-    if(!fs::exists(src))return false;
-    if(!fs::is_directory(src))return false;
 
+    std::error_code ec;
+    fs::path src(path);
+    if(!fs::exists(src, ec) || ec)return false;
+    if(!fs::is_directory(src, ec) || ec)return false;
     fs::path resources =
         g_sdkInitialPath /
-        "resources";
-
-    fs::create_directories(resources);
-
-    fs::path dst =resources /themeName;
-
- 
-    if(fs::exists(dst))return false;
-    
+        "resources" /
+        themeName;
+    fs::create_directories(resources, ec);
+    if(ec)return false;
+    fs::path dst = resources;
     fs::copy(
         src,
         dst,
-        fs::copy_options::recursive
+        fs::copy_options::recursive |
+        fs::copy_options::overwrite_existing,
+        ec
     );
-
+    if(ec)return false;
     return true;
 }
 void UserConfig::setTheme(
