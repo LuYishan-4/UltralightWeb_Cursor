@@ -55,6 +55,8 @@ qt_add_qml_module(
 
     QML_FILES
         Main.qml
+    RESOURCES
+        assets/github.svg
 )
 
 
