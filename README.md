@@ -1,170 +1,163 @@
-
 <div align="center">
-
 <img src="asstes/114514.jpg" width="200" height="200">
 
-<h1>CursorFX</h1>
+# UltralightWeb Cursor
+
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![AUR](https://img.shields.io/badge/AUR-ultralightwebcursor--git-1793d1?logo=arch-linux&logoColor=white)](https://aur.archlinux.org/packages/ultralightwebcursor-git)
+[![Platform](https://img.shields.io/badge/platform-Wayland%20%7C%20KWin-blueviolet)](#)
+[![Made with C++](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=c%2B%2B&logoColor=white)](#)
+[![Ultralight](https://img.shields.io/badge/renderer-Ultralight-orange)](https://ultralig.ht/)
+
+**English** | [繁體中文](#繁體中文)
+
+  <img src="asstes/ciallo.gif" width="500">
+  
+
 
 </div>
-CursorFX is a Linux custom animated cursor framework based on Wayland and Ultralight.
-
-The project allows users to create dynamic cursor effects using HTML, CSS, and JavaScript. The rendered content is converted into a native Wayland cursor, enabling customizable and programmable cursor animations.
-
-CursorFX is designed as a lightweight C++ framework that separates cursor rendering, Wayland communication, and configuration management.
 
 ---
 
-## Features
+## English
 
-- Native Wayland cursor support
-- HTML/CSS/JavaScript based cursor themes
-- Ultralight rendering backend
-- Real-time cursor updates
+**UltralightWeb Cursor** is a Linux custom animated cursor framework built on **Wayland** and **Ultralight**.
+
+It lets you design cursor effects with plain **HTML, CSS, and JavaScript**. Whatever you render gets converted into a native Wayland/KWin cursor in real time — fully customizable, fully programmable.
+
+The project is split into three independent pieces so each part stays simple and swappable:
+
+| Component | Role |
+|---|---|
+| `kwin-plugin` | The actual KWin Effect — renders your HTML theme and draws it as the system cursor, globally, across every window |
+| `settings-app` | A small Qt/QML GUI to pick your theme, toggle the effect on/off, and manage settings |
+
+
+### Features
+
+- Native Wayland/KWin cursor rendering — works across all windows, not just one app
+- HTML/CSS/JavaScript-based cursor themes
+- Ultralight rendering backend (headless, CPU-rendered — no GPU context conflicts with KWin)
+- Real-time cursor updates, including click/drag reactive effects
 - Transparent cursor rendering
-- Custom cursor animation support
+- Persistent user settings (remembers your last theme/state)
+- Graphical settings app (QML) with live "apply without logout" support
 
+### Installation
 
-# Dependencies
-
-## Build Dependencies
-
-### Arch Linux
+**Arch Linux (recommended):**
 
 ```bash
-not yet now :(
+yay -S ultralightwebcursor-git
 ```
 
-### Ubuntu / Debian
+**Manual build (any distro, until packaging matures):**
 
 ```bash
-not yet now :(
-```
+git clone https://github.com/yourname/UltralightWeb-Cursor.git
+cd UltralightWeb-Cursor
 
----
-
-# Ultralight SDK
-
-CursorFX uses:
-
-```
-Ultralight Free SDK 1.4.0
-```
-
-Download:
-
-```
-https://ultralig.ht/
-```
-
-The SDK should be placed as:
-
-```
-CursorFX/
-
- |
- |-- sdk/
-
-      |
-      |-- ultralight-free-sdk-1.4.0-linux-x64
-```
-
-Expected structure:
-
-```
-sdk/
-└── ultralight-free-sdk-1.4.0-linux-x64
-    |
-    |-- include
-    |-- lib
-    |-- bin
-```
-
----
-
-# Build
-
-Clone repository:
-
-```bash
-git clone https://github.com/yourname/CursorFX.git
-
-cd CursorFX
-```
-
-Create build directory:
-
-```bash
-mkdir build
-
-cd build
-```
-
-Configure:
-
-```bash
+mkdir build && cd build
 cmake ..
+cmake --build . -j$(nproc)
+cmake --install .
 ```
 
-Compile:
+This builds and installs all three components: the KWin plugin, the settings app, and the test daemon.
+
+
+### Setting
 
 ```bash
-make -j$(nproc)
+/.config/ultralightwebcursor/config.ini
 ```
+
+   (also searchable from KRunner / the app launcher as **"UltralightWebCursor-GUi"**)
+
+3. Changes apply live via **Apply** — no logout required.
+
+### Roadmap (not implemented yet)
+
+These are planned, not yet built — contributions welcome:
+
+- **Cursor Editor** — a graphical editor for authoring cursor animations
+- **Animation Timeline** — keyframes, frame interpolation, animation curves
+- **Advanced Effects** — particle cursors, glow effects, physics-based animation, shader effects
+- **Theme Marketplace** — theme packages, import/export, community sharing
+
+### Author
+
+**LuYishan**
 
 ---
 
-# Run
+## 繁體中文
 
-Start CursorFX:
+**UltralightWeb Cursor**是一個基於 **Wayland** 與 **Ultralight** 打造的 Linux 自訂動畫游標框架。
+
+你可以直接用 **HTML、CSS、JavaScript** 設計游標特效，渲染出來的畫面會即時轉換成原生的 Wayland/KWin 游標——完全可自訂、完全可程式化。
+
+專案拆成三個各自獨立的部分，讓每個模組單純、可替換：
+
+| 元件 | 作用 |
+|---|---|
+| `kwin-plugin` | 真正的 KWin Effect——渲染你的 HTML 主題並畫成系統游標，跨所有視窗全域生效 |
+| `settings-app` | 小型 Qt/QML 圖形化設定工具，用來選主題、開關特效、管理設定 |
+
+
+###  特色
+
+- 原生 Wayland/KWin 游標渲染——跨所有視窗生效，不只單一 App 內
+- 基於 HTML/CSS/JavaScript 的游標主題
+- Ultralight 渲染後端（headless、CPU 渲染，不會跟 KWin 的 GPU context 打架）
+- 即時游標更新，支援點擊/拖曳互動特效
+- 透明背景游標渲染
+- 使用者設定持久化（記得你上次的主題/開關狀態）
+- 圖形化設定工具（QML），支援「不用登出即可套用」
+
+###  安裝
+
+**Arch Linux（推薦）：**
 
 ```bash
-./build/src/cursor-ani
+yay -S ultralightwebcursor-git
 ```
-  <p align="center">
 
-## Cursor Editor
+**手動編譯（其他發行版，套件尚未成熟前的替代方案）：**
 
-A graphical editor for creating cursor animations.
+```bash
+git clone https://github.com/yourname/UltralightWeb-Cursor.git
+cd UltralightWeb-Cursor
 
----
+mkdir build && cd build
+cmake ..
+cmake --build . -j$(nproc)
+cmake --install .
+```
 
-## Animation Timeline
-
-Support:
-
-- Keyframes
-- Frame interpolation
-- Animation curves
-
-
----
-
-## Advanced Effects
-
-Possible effects:
-
-- Particle cursor
-- Glow effects
-- Physics based animation
-- Shader effects
+這樣會一次把三個元件（KWin plugin、設定工具、測試 daemon）都編好並安裝。
 
 
----
 
-## Theme Marketplace
+### 設置
 
-Support:
+```bash
+/.config/ultralightwebcursor/config.ini
+```
 
-- Theme packages
-- Import/export
-- Community sharing
+   （也可以直接在 KRunner / 應用程式選單搜尋 **「UltralightWebCursor-GUi」**）
 
----
+3. 按下 **套用** 即時生效，不需要登出。
 
-但是現在還沒做完:)
+### 開發規劃（尚未實作，但是現在還沒做完 :)）
 
----
+以下是規劃中、還沒做出來的功能，歡迎貢獻：
 
-# Author
+- **游標編輯器** — 圖形化製作游標動畫的編輯器
+- **GPU渲染兼容** — 優化效能
 
-LuYishan
+純ai readme文本:)  
+
+### 作者
+
+**LuYishan**
