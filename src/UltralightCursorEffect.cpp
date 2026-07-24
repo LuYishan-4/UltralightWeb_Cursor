@@ -244,6 +244,7 @@ m_mouseProvider->initialize();
         );
         texture->render(QSizeF(w,h)*scale);
         glDisable(GL_BLEND);
+        effects->addRepaintFull();
     }
 
     bool UltralightCursorEffect::isActive() const{

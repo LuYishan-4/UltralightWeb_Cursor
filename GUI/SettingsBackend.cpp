@@ -7,7 +7,7 @@
 #include <QDBusInterface>
 #include <QDBusConnection>
 #include <QDBusMessage>
-
+#include <QDir>
 #include <filesystem>
 
 
@@ -398,27 +398,20 @@ void SettingsBackend::loadThemes()
 
 bool SettingsBackend::uploadTheme(const QString& path){
 
+
     qDebug() << "uploadTheme path =" << path;
 
-    QFileInfo info(path);
-    if(!info.exists() ||
-       !info.isDir())
+    QDir dir(QDir::cleanPath(path));
+
+    if(!dir.exists())
     {
-
         setStatusMessage(
-            QStringLiteral(
-                "Folder not found"
-            )
+            QStringLiteral("Folder not found")
         );
-
         return false;
-
     }
 
-
-
-    QString name =
-        info.fileName();
+    QString name = dir.dirName();
 
 
     qDebug() << "uploadTheme name =" << name;
