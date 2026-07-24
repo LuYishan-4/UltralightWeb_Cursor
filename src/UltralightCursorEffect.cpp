@@ -113,7 +113,7 @@ m_mouseProvider->initialize();
 
     //GPU-Supported
     bool UltralightCursorEffect::supported(){
-        return true;
+        return effects->isOpenGLCompositing();
     }
 
     void UltralightCursorEffect::enable(){
@@ -129,6 +129,7 @@ m_mouseProvider->initialize();
         effects->addRepaintFull();
     }
     void UltralightCursorEffect::reloadHtml(){
+        m_cursorTexture.reset();
         UltralightWebCursorM::UserConfig config;
        config.load();
         auto html = config.readKeyValue("html");

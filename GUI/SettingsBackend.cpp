@@ -401,15 +401,11 @@ void SettingsBackend::loadThemes()
 
 
 
-bool SettingsBackend::uploadTheme(
-    const QString& path
-)
-{
+bool SettingsBackend::uploadTheme(const QString& path){
+
+    qDebug() << "uploadTheme path =" << path;
 
     QFileInfo info(path);
-
-
-
     if(!info.exists() ||
        !info.isDir())
     {

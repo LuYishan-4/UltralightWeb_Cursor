@@ -164,28 +164,32 @@ void UserConfig::removeBlacklist(const std::string& app){
     data_["blacklist"] = new_value;
     save();
 }
-bool UserConfig::uploadTheme(const std::string& path,const std::string& themeName){
-    namespace fs = std::filesystem;
-
+bool UserConfig::uploadTheme(const std::string& path, const std::string& themeName){
     std::error_code ec;
     fs::path src(path);
-    if(!fs::exists(src, ec) || ec)return false;
-    if(!fs::is_directory(src, ec) || ec)return false;
-    fs::path resources =
+    if (!fs::exists(src, ec) || ec) return false;
+    if (!fs::is_directory(src, ec) || ec)   return false;
+    fs::path dst =
         g_sdkInitialPath /
         "resources" /
         themeName;
-    fs::create_directories(resources, ec);
-    if(ec)return false;
-    fs::path dst = resources;
-    fs::copy(
-        src,
-        dst,
-        fs::copy_options::recursive |
-        fs::copy_options::overwrite_existing,
-        ec
-    );
-    if(ec)return false;
+    fs::remove_all(dst, ec);
+    ec.clear();
+    fs::create_directories(dst, ec);
+    if (ec)return false;
+    for (const auto& entry : fs::directory_iterator(src, ec)){
+        if (ec)return false;
+        fs::copy(
+            entry.path(),
+            dst / entry.path().filename(),
+            fs::copy_options::recursive |
+            fs::copy_options::overwrite_existing,
+            ec
+        );
+
+        if (ec)
+            return false;
+    }
     return true;
 }
 void UserConfig::setTheme( const std::string& themeName){
