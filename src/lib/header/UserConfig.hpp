@@ -5,63 +5,56 @@
 #include <filesystem>
 #include <vector>
 
-
 namespace UltralightWebCursorM
 {
+
 
 extern std::filesystem::path g_sdkInitialPath;
 extern std::filesystem::path g_htmlInitialPath;
 
+
+struct ConfigValues {
+    std::string configver;
+    std::string html;
+    std::string sdk;
+    std::string blacklist;
+    std::string width;
+    std::string height;
+    std::string enabled;
+    std::string isautohide;
+};
+
 class UserConfig
 {
 public:
-    /**
-     * @brief Constructor. Automatically initializes the configuration file path 
-     *        (defaults to ~/.config/cursorfx/config.ini).
-     */
-    UserConfig();
+    static UserConfig* instance();
 
-    /**
-     * @brief Loads the configuration file. If the file does not exist, 
-     *        it automatically initializes with default parameters and saves it.
-     * @return true if loading or initialization succeeds; false otherwise.
-     */
+    ConfigValues values;
     bool load();
 
-    /**
-     * @brief Saves the current configuration data to the disk file 
-     *        (automatically creates parent directories if they don't exist).
-     * @return true if saving succeeds; false otherwise.
-     */
     bool save();
-
-    /**
-     * @brief Sets a custom generic key-value pair configuration.
-     * @param key The name of the configuration item.
-     * @param value The value of the configuration item.
-     */
-    void setKeyValue(const std::string& key,const std::string& path);
-
-
-     /**
-     * @brief Retrieves the value of a specified key, returning a default value if it does not exist.
-     * @param key The name of the configuration item.
-     * @param def The default value to return if the key is not found.
-     * @return The value associated with the key, or the default value.
-     */
+    void setKeyValue(const std::string& key, const std::string& path);
     std::string readKeyValue(const std::string& key) const;
-
     std::vector<std::string> getBlacklist() const;
-    void appendBlacklist(const std::string& key);
-    void removeBlacklist(const std::string& key);
-    bool uploadTheme( const std::string& srcPath,const std::string& themeName);
+    void appendBlacklist(const std::string& app);
+    void removeBlacklist(const std::string& app);
+    bool uploadTheme(const std::string& srcPath, const std::string& themeName);
     void setTheme(const std::string& themeName);
-    std::string currentTheme()const;
-
+    std::string currentTheme() const;
 
 private:
-    std::string configPath_;                            // Full path of the configuration file.
-    std::unordered_map<std::string, std::string> data_;  // Hash map storing the INI configuration data.
+    UserConfig();
+    UserConfig(const UserConfig&) = delete;
+    UserConfig& operator=(const UserConfig&) = delete;
+    struct BindItem {
+        std::string key;
+        std::string defaultValue;
+        std::string* pField;
+    };
+
+    std::vector<BindItem> schema_;
+    std::string configPath_; 
+    std::unordered_map<std::string, std::string> data_;
 };
 
-} // namespace UltralightWebCursorM
+} 

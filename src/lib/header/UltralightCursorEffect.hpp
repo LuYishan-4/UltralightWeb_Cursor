@@ -103,13 +103,12 @@ private:
 
     UltralightWebCursorM::BlacklistManager m_blacklist;
 
-
-
     std::unique_ptr<GLTexture> m_cursorTexture;
 
 
 
-    bool m_isMouseHidden = false;
+
+
 
 
 

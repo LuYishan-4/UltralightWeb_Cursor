@@ -171,9 +171,6 @@ target_link_libraries(
 
 
 
-#
-# Runtime library path
-#
 
 set(
     CMAKE_BUILD_RPATH
@@ -188,44 +185,27 @@ set(
 
 
 
-#
-# Build targets
-#
 
 
 add_subdirectory(src)
 add_subdirectory(GUI)
 
 
-#
-# Install Ultralight runtime
-#
 
-install(
-    DIRECTORY
-        "${ULTRALIGHT_BIN}/"
+set(EFFECT_LOCAL_DIR "$ENV{HOME}/.local/share/kwin/effects/ultralightwebcursor")
 
-    DESTINATION
-        "${CMAKE_INSTALL_LIBDIR}/ultralightwebcursor"
 
-    FILES_MATCHING
-        PATTERN "*.so*"
+install(DIRECTORY ${ULTRALIGHT_ROOT}/resources/
+        DESTINATION ${EFFECT_LOCAL_DIR}/resources
+)
+install(FILES ${ULTRALIGHT_ROOT}/cacert.pem
+        DESTINATION ${EFFECT_LOCAL_DIR}
 )
 
 
-
-#
-# Install cursor resources
-#
-
-install(
-    DIRECTORY
-        WebCursor/
-
-    DESTINATION
-        "${CMAKE_INSTALL_DATADIR}/kwin/effects/ultralightwebcursor/resources/default"
+install(DIRECTORY WebCursor/
+        DESTINATION ${EFFECT_LOCAL_DIR}/resources/default
 )
-
 
 
 feature_summary(
