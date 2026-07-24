@@ -4,7 +4,7 @@
 #include <memory>
 
 #include <QPointF>
-#include <QDBusConnection>
+
 
 #include <core/output.h>
 #include <kwin/effect/effect.h>
@@ -30,7 +30,7 @@ class UltralightCursorEffect :
 
     Q_OBJECT
 
-
+     Q_DISABLE_COPY(UltralightCursorEffect)
 public:
 
 

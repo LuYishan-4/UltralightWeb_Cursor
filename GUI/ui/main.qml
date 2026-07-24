@@ -17,8 +17,8 @@ SimpleKCM {
         title: qsTr("Choose Theme Folder")
 
         onAccepted: {
-            backend.uploadTheme(
-                selectedFolder.toLocalFile()
+            kcm.backend.uploadTheme(
+                selectedFolder.toString().replace("file://", "")
             )
         }
     }
@@ -96,15 +96,15 @@ SimpleKCM {
                 ComboBox {
                     id: themeBox
                     Layout.fillWidth: true
-                    model: backend.themeList
+                    model:   kcm.backend.themeList
 
                     currentIndex:
-                        backend.themeList.indexOf(
-                            backend.currentTheme
+                          kcm.backend.themeList.indexOf(
+                              kcm.backend.currentTheme
                         )
 
                     onActivated: {
-                        backend.useTheme(
+                          kcm.backend.useTheme(
                             currentText
                         )
                     }
@@ -120,7 +120,7 @@ SimpleKCM {
                     Layout.preferredHeight: 300
                     clip: true
                     spacing: Kirigami.Units.smallSpacing
-                    model: backend.themeList
+                    model:   kcm.backend.themeList
 
                     delegate: Kirigami.Card {
                         width: ListView.view.width
@@ -139,7 +139,7 @@ SimpleKCM {
                                     "dialog-ok"
 
                                 onClicked: {
-                                    backend.useTheme(
+                                      kcm.backend.useTheme(
                                         modelData
                                     )
                                 }
@@ -152,7 +152,7 @@ SimpleKCM {
                                     "document-open-folder"
 
                                 onClicked: {
-                                    backend.openThemeFolder(
+                                      kcm.backend.openThemeFolder(
                                         modelData
                                     )
                                 }
@@ -165,7 +165,7 @@ SimpleKCM {
                                     "edit-delete"
 
                                 onClicked: {
-                                    backend.removeTheme(
+                                      kcm.backend.removeTheme(
                                         modelData
                                     )
                                 }
@@ -208,7 +208,7 @@ SimpleKCM {
                     Layout.preferredHeight: 300
 
                     model:
-                        backend.blacklist
+                          kcm.backend.blacklist
 
                     delegate:
                     Kirigami.Card {
@@ -230,7 +230,7 @@ SimpleKCM {
                                     "edit-delete"
 
                                 onClicked: {
-                                    backend.removeBlacklist(
+                                      kcm.backend.removeBlacklist(
                                         modelData
                                     )
                                 }
@@ -259,7 +259,7 @@ SimpleKCM {
                             if (
                                 blacklistInput.text.length > 0
                             ) {
-                                backend.addBlacklist(
+                                  kcm.backend.addBlacklist(
                                     blacklistInput.text
                                 )
 
@@ -286,10 +286,10 @@ SimpleKCM {
                             qsTr("HTML Path")
 
                         text:
-                            backend.htmlPath
+                              kcm.backend.htmlPath
 
                         onEditingFinished:
-                            backend.htmlPath =
+                              kcm.backend.htmlPath =
                                 text
                     }
 
@@ -298,10 +298,10 @@ SimpleKCM {
                             qsTr("SDK Path")
 
                         text:
-                            backend.sdkPath
+                              kcm.backend.sdkPath
 
                         onEditingFinished:
-                            backend.sdkPath =
+                              kcm.backend.sdkPath =
                                 text
                     }
 
@@ -310,13 +310,13 @@ SimpleKCM {
                             qsTr("Cursor Width")
 
                         value:
-                            backend.cursorWidth
+                              kcm.backend.cursorWidth
 
                         from: 1
                         to: 512
 
                         onValueModified:
-                            backend.cursorWidth =
+                              kcm.backend.cursorWidth =
                                 value
                     }
 
@@ -325,13 +325,13 @@ SimpleKCM {
                             qsTr("Cursor Height")
 
                         value:
-                            backend.cursorHeight
+                              kcm.backend.cursorHeight
 
                         from: 1
                         to: 512
 
                         onValueModified:
-                            backend.cursorHeight =
+                              kcm.backend.cursorHeight =
                                 value
                     }
                 }
@@ -345,7 +345,7 @@ SimpleKCM {
                             "media-playback-start"
 
                         onClicked:
-                            backend.enable()
+                              kcm.backend.enable()
                     }
 
                     Button {
@@ -356,7 +356,7 @@ SimpleKCM {
                             "media-playback-stop"
 
                         onClicked:
-                            backend.disable()
+                              kcm.backend.disable()
                     }
 
                     Button {
@@ -367,7 +367,7 @@ SimpleKCM {
                             "view-refresh"
 
                         onClicked:
-                            backend.reconfigureKWin()
+                              kcm.backend.reconfigureKWin()
                     }
                 }
             }
@@ -381,10 +381,10 @@ SimpleKCM {
             Layout.fillWidth: true
 
             visible:
-                backend.statusMessage.length > 0
+                  kcm.backend.statusMessage.length > 0
 
             text:
-                backend.statusMessage
+                  kcm.backend.statusMessage
 
             type:
                 Kirigami.MessageType.Information

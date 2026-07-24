@@ -25,6 +25,8 @@ UltralightHtmlEffect::~UltralightHtmlEffect(){
 bool UltralightHtmlEffect::initialize( const std::string& path,const std::string& sdk,const int&  w,const int&  h){
     width_ = w;
     height_ = h;
+
+    if (!platform_initialized_){
     ultralight::Config config;
     config.resource_path_prefix =
         ultralight::String(
@@ -46,6 +48,8 @@ bool UltralightHtmlEffect::initialize( const std::string& path,const std::string
             )
         )
     );
+    platform_initialized_= true;
+}
     renderer_ =ultralight::Renderer::Create();
     if(!renderer_) return false;
 
@@ -102,9 +106,18 @@ bool UltralightHtmlEffect::load(const std::string& path){
 }
 
 void UltralightHtmlEffect::reload(const std::string& path,  const std::string& perpath,const int&  width,const int&  height){
-       listener_.reset();
-        view_ = nullptr;
-        renderer_ = nullptr;
+        if(view_){
+        view_->set_load_listener(nullptr);
+    }
+
+    listener_.reset();
+
+    view_ = nullptr;
+
+    renderer_ = nullptr;
+
+    is_loaded_ = false;
+
         initialize(path,perpath,width,height);
 }
 

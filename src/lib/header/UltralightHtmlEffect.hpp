@@ -120,6 +120,8 @@ private:
 
     int stride_ = 0;
 
+    bool platform_initialized_=false;
+
 
 
     std::vector<uint8_t> pixel_buffer_;

@@ -195,9 +195,7 @@ void SettingsBackend::reload()
 
 
 
-    enabled_ =
-        config_.readKeyValue("enabled")
-        == "true";
+    enabled_ =config_.readKeyValue("enabled")  == "true";
 
 
 
@@ -572,7 +570,7 @@ void SettingsBackend::enable()
 
           QStringLiteral("/UltralightCursor"),
 
-          QStringLiteral("org.kde.KWin"),
+          QStringLiteral("org.kde.kwin.KWin.UltralightCursorEffect"),
 
         QDBusConnection::sessionBus()
 
@@ -624,7 +622,7 @@ void SettingsBackend::disable()
     QDBusInterface effect(
           QStringLiteral("org.kde.KWin"),
           QStringLiteral("/UltralightCursor"),
-          QStringLiteral("org.kde.KWin"),
+          QStringLiteral("org.kde.kwin.KWin.UltralightCursorEffect"),
             QDBusConnection::sessionBus()
     );
 
@@ -673,7 +671,7 @@ void SettingsBackend::reconfigureKWin()
     QDBusInterface effect(
         QStringLiteral("org.kde.KWin"),
          QStringLiteral("/UltralightCursor"),
-        QStringLiteral("org.kde.KWin"),
+        QStringLiteral("org.kde.kwin.KWin.UltralightCursorEffect"),
         QDBusConnection::sessionBus()
 
     );

@@ -92,6 +92,9 @@ UltralightCursorEffect::UltralightCursorEffect()
 );
 
 m_mouseProvider->initialize();
+
+
+
     qDebug() << "[UltralightCursorEffect] codsfsfsfsfsfsfsfscc";
     QDBusConnection::sessionBus().registerObject(
         QStringLiteral("/UltralightCursor"),
@@ -110,7 +113,7 @@ m_mouseProvider->initialize();
 
     //GPU-Supported
     bool UltralightCursorEffect::supported(){
-        return effects->isOpenGLCompositing();
+        return true;
     }
 
     void UltralightCursorEffect::enable(){
@@ -143,8 +146,7 @@ m_mouseProvider->initialize();
 {
     Q_UNUSED(flags)
  
-    std::cout << "[UltralightCursorEffect][debug] reconfigure() 被呼叫，重新讀取設定\n";
- 
+
 
     effects->addRepaintFull();
 }
