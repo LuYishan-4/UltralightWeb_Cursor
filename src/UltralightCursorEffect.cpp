@@ -21,12 +21,7 @@
 namespace KWin
 {
 
-//metadata place
-KWIN_EFFECT_FACTORY_SUPPORTED(
-    KWin::UltralightCursorEffect,
-    "metadata.json",
-    return KWin::UltralightCursorEffect::supported();
-)
+
 
 UltralightCursorEffect::UltralightCursorEffect()
 {
@@ -51,9 +46,7 @@ UltralightCursorEffect::UltralightCursorEffect()
     int width = std::stoi(widthStr);
     int height = std::stoi(heightStr);
     qDebug() << "[UltralightCursorEffect] conficccccc";
-    auto blacklist = config.getBlacklist();
     m_blacklist.setBlacklist(config.getBlacklist());
-
 
 
     config.save();
@@ -129,7 +122,7 @@ m_mouseProvider->initialize();
         effects->addRepaintFull();
     }
     void UltralightCursorEffect::reloadHtml(){
-        m_cursorTexture.reset();
+        //m_cursorTexture.reset();
         UltralightWebCursorM::UserConfig config;
        config.load();
         auto html = config.readKeyValue("html");
@@ -143,13 +136,8 @@ m_mouseProvider->initialize();
         effects->addRepaintFull();
 
     }
-    void UltralightCursorEffect::reconfigure(ReconfigureFlags flags)
-{
+    void UltralightCursorEffect::reconfigure(ReconfigureFlags flags){
     Q_UNUSED(flags)
- 
-
-
-    effects->addRepaintFull();
 }
     bool UltralightCursorEffect::isBlacklisted() const {
          auto window = effects->activeWindow();
@@ -212,8 +200,8 @@ m_mouseProvider->initialize();
             effects->addRepaintFull();
             return;
          }
-        int w =m_html->width();
-        int h =m_html->height();
+       const int w=m_html->width();
+       const int h=m_html->height();
 
         QPointF hotspot(
             w/2.0,
@@ -256,12 +244,17 @@ m_mouseProvider->initialize();
         );
         texture->render(QSizeF(w,h)*scale);
         glDisable(GL_BLEND);
-        effects->addRepaintFull();
     }
 
     bool UltralightCursorEffect::isActive() const{
         return m_html != nullptr;
     }
+
+    KWIN_EFFECT_FACTORY_SUPPORTED(
+       KWin::UltralightCursorEffect,
+        "metadata.json",
+        return KWin::UltralightCursorEffect::supported();
+)
 
 }
 

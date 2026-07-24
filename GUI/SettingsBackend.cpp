@@ -365,11 +365,6 @@ void SettingsBackend::loadThemes()
         Q_EMIT themeListChanged();
         return;
     }
-
-
-
-
-
     for(auto& item :
         std::filesystem::directory_iterator(path))
     {
@@ -426,7 +421,7 @@ bool SettingsBackend::uploadTheme(const QString& path){
         info.fileName();
 
 
-
+    qDebug() << "uploadTheme name =" << name;
 
     if(config_.uploadTheme(
         path.toStdString(),

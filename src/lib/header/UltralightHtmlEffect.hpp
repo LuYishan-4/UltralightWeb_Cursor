@@ -49,7 +49,7 @@ public:
         const std::string& perpath,
         const int&  width,const int&  height);
 
-
+bool resize(const int&  width,const int&  height);
 
     const uint8_t* pixels() const;
 

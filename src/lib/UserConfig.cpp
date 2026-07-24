@@ -1,5 +1,5 @@
 #include "header/UserConfig.hpp"
-
+#include <QDBusConnection>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -167,28 +167,29 @@ void UserConfig::removeBlacklist(const std::string& app){
 bool UserConfig::uploadTheme(const std::string& path, const std::string& themeName){
     std::error_code ec;
     fs::path src(path);
-    if (!fs::exists(src, ec) || ec) return false;
-    if (!fs::is_directory(src, ec) || ec)   return false;
+    if(!fs::exists(src, ec) || ec) return false;
+    if(!fs::is_directory(src, ec) || ec)    return false;
     fs::path dst =
         g_sdkInitialPath /
         "resources" /
         themeName;
+    qDebug() << "uploadTheme dst =" <<dst.string();
+    qDebug() << "uploadTheme  themename =" <<themeName;
     fs::remove_all(dst, ec);
     ec.clear();
     fs::create_directories(dst, ec);
-    if (ec)return false;
-    for (const auto& entry : fs::directory_iterator(src, ec)){
-        if (ec)return false;
+    if(ec)  return false;
+    for(const auto& entry : fs::directory_iterator(src, ec)){
+        if(ec) return false;
+        fs::path target =dst / entry.path().filename();
         fs::copy(
             entry.path(),
-            dst / entry.path().filename(),
+            target,
             fs::copy_options::recursive |
             fs::copy_options::overwrite_existing,
             ec
         );
-
-        if (ec)
-            return false;
+        if(ec)   return false;
     }
     return true;
 }

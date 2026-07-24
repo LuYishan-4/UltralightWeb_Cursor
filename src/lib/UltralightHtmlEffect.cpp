@@ -87,6 +87,8 @@ bool UltralightHtmlEffect::load(const std::string& path){
         std::istreambuf_iterator<char>()
     );
 
+
+
     std::filesystem::path p(path);
 
     std::string base ="file://" +p.parent_path().string()+"/";
@@ -104,19 +106,15 @@ bool UltralightHtmlEffect::load(const std::string& path){
     view_->set_needs_paint(true);
     return true;
 }
+bool UltralightHtmlEffect::resize(const int&  width,const int&  height){
+    if (width>1920 || height > 1080)return false;
+    view_->Resize(width,height);
+    return true;
+}
 
 void UltralightHtmlEffect::reload(const std::string& path,  const std::string& perpath,const int&  width,const int&  height){
-      if(view_){
-        view_->set_load_listener(nullptr);
-        view_ = nullptr;
-    }
-    listener_.reset();
-    if(renderer_) {
-        renderer_->PurgeMemory();
-        renderer_ = nullptr;
-    }
-    is_loaded_ = false;
-        initialize(path,perpath,width,height);
+       UltralightHtmlEffect::load(path);
+       UltralightHtmlEffect::resize(width,height);
 }
 
 void UltralightHtmlEffect::move( int x, int y,bool pressed){
