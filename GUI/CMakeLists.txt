@@ -1,16 +1,22 @@
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+cmake_minimum_required(VERSION 3.16)
+
+set(QT_MIN_VERSION "6.5.0")
+set(KF6_MIN_VERSION "6.0.0")
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
+
+project(kcm_ultralightwebcursor)
+
+find_package(ECM ${KF6_MIN_VERSION} REQUIRED NO_MODULE)
+
 
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-kcmutils_add_qml_kcm(
+include(KDECompilerSettings NO_POLICY_SCOPE)
+kcmutils_add_qml_kcm(kcm_ultralightwebcursor)
 
-    kcm_ultralightwebcursor
-
-
-    SOURCES
-
+target_sources(kcm_ultralightwebcursor PRIVATE
        main_settings.cpp
        main_settings.hpp
 
@@ -20,8 +26,6 @@ kcmutils_add_qml_kcm(
         ${CMAKE_SOURCE_DIR}/src/lib/header/UserConfig.hpp
         ${CMAKE_SOURCE_DIR}/src/lib/Quick/PluginPath/PluginPath.cpp
         ${CMAKE_SOURCE_DIR}/src/lib/Quick/PluginPath/PluginPath.hpp
-
-
 )
 
 

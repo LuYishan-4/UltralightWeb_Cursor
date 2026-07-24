@@ -23,7 +23,7 @@ UIKCM::UIKCM(
 
  
 
-    setButtons(Apply | Default);
+   setButtons(Help | Apply | Default);
 
     load();
 }

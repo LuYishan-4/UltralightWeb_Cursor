@@ -3,11 +3,12 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 import org.kde.kirigami as Kirigami
+import org.kde.kcmutils
 
-Kirigami.ScrollablePage {
+SimpleKCM {
     id: root
 
-    title: qsTr("CursorFX")
+    title: qsTr("WebCursor")
 
     property int currentTab: 0
 
@@ -23,7 +24,7 @@ Kirigami.ScrollablePage {
     }
 
     ColumnLayout {
-        width: parent.width
+        anchors.fill: parent
         spacing: Kirigami.Units.largeSpacing
 
         // =========================

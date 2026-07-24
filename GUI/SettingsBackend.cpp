@@ -84,12 +84,7 @@ void SettingsBackend::setHtmlPath(const QString& path)
 
     htmlPath_ = path;
 
-    // *** 修正：原本這裡是沒寫完的 config_.up，接成呼叫 uploadTheme ***
-    //
-    // 把選到的 html 檔案所在的資料夾當成一個主題整個複製進
-    // <sdk>/resources/<資料夾名稱>，維持跟
-    // UserConfig::setTheme()/currentTheme() 一致的目錄結構
-    // （currentTheme() 就是靠 html 路徑的上層資料夾名稱判斷目前主題）。
+
     QFileInfo info(path);
     QString themeFolder = info.absolutePath();
     QString themeName = QFileInfo(themeFolder).fileName();
@@ -231,28 +226,14 @@ void SettingsBackend::reload()
 
 
 
-    int width =
-        QString::fromStdString(
-            config_.readKeyValue("width")
-        )
-        .toInt(&ok);
+    int width =  std::stoi(config_.readKeyValue("width"));
+
+   cursorWidth_=width;
 
 
 
-    if(ok) cursorWidth_=width;
-
-
-
-    int height =
-        QString::fromStdString(
-            config_.readKeyValue("height")
-        )
-        .toInt(&ok);
-
-
-
-    if(ok)
-        cursorHeight_=height;
+    int height =std::stoi(config_.readKeyValue("height"));
+    cursorHeight_=height;
 
 
 
