@@ -106,23 +106,16 @@ bool UltralightHtmlEffect::load(const std::string& path){
 }
 
 void UltralightHtmlEffect::reload(const std::string& path,  const std::string& perpath,const int&  width,const int&  height){
-      if(view_)
-    {
+      if(view_){
         view_->set_load_listener(nullptr);
-        view_->Destroy();
         view_ = nullptr;
     }
-
-
     listener_.reset();
-
-
-    if(renderer_)
-    {
+    if(renderer_) {
         renderer_->PurgeMemory();
         renderer_ = nullptr;
     }
-
+    is_loaded_ = false;
         initialize(path,perpath,width,height);
 }
 
